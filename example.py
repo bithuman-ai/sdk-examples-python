@@ -12,11 +12,6 @@ from loguru import logger
 
 from bithuman import AsyncBithuman, VideoFrame
 from bithuman.audio import float32_to_int16, load_audio
-from bithuman.token_utils import (
-    TokenRequestConfig,
-    request_token_async,
-    token_refresh_worker_async,
-)
 from bithuman.utils import FPSController
 
 try:
