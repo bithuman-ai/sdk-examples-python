@@ -59,13 +59,11 @@ The integration consists of two main components:
 
 ## Installation
 
-1. Install the required dependencies:
+Install the required dependencies:
 
 ```bash
 pip install bithuman livekit livekit-api websockets python-dotenv
 ```
-
-2. Clone or download this example code.
 
 ## Configuration
 
@@ -74,6 +72,7 @@ Create a `.env` file in the same directory as the scripts with the following var
 ```
 # bitHuman Configuration
 BITHUMAN_RUNTIME_TOKEN=your_bithuman_token
+BITHUMAN_AVATAR_MODEL=/path/to/model.imx
 
 # LiveKit Configuration
 LIVEKIT_URL=wss://your-livekit-server.com
@@ -86,12 +85,12 @@ LIVEKIT_API_SECRET=your_api_secret
 ### Starting the bitHuman Server
 
 ```bash
-python bithuman_server.py --avatar-model "default" --room "my-room-name"
+python bithuman_server.py --room "my-room-name"
 ```
 
 Command-line arguments:
 
-- `--avatar-model`: The bitHuman avatar model to use (required)
+- `--avatar-model`: The Bithuman avatar model to use (defaults to env var)
 - `--room`: LiveKit room name (required)
 - `--token`: bitHuman runtime token (defaults to env var)
 - `--livekit-url`: LiveKit server URL (defaults to env var)

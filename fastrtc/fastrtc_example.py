@@ -1,19 +1,12 @@
 import asyncio
 import logging
 import os
+from collections.abc import AsyncIterator
 from pathlib import Path
-from typing import AsyncIterator
 
 import gradio as gr
 import numpy as np
 from dotenv import load_dotenv
-from fastrtc import (
-    AsyncAudioVideoStreamHandler,
-    AudioEmitType,
-    Stream,
-    VideoEmitType,
-    wait_for_item,
-)
 from livekit import rtc
 from livekit.agents import utils
 from livekit.agents.voice import Agent, AgentSession
@@ -25,6 +18,13 @@ from numpy.typing import NDArray
 
 from bithuman import AsyncBithuman
 from bithuman.utils import FPSController
+from fastrtc import (
+    AsyncAudioVideoStreamHandler,
+    AudioEmitType,
+    Stream,
+    VideoEmitType,
+    wait_for_item,
+)
 
 load_dotenv()
 
@@ -171,7 +171,7 @@ class BitHumanHandler(AsyncAudioVideoStreamHandler):
                     self.pushed_duration, interrupted=False
                 )
                 logger.info(
-                    f"audio playback finished, pushed_duration={self.pushed_duration}, interrupted={False}"
+                    f"audio playback finished, pushed_duration={self.pushed_duration}, interrupted={False}"  # noqa: E501
                 )
                 self.pushed_duration = 0
 
@@ -195,7 +195,7 @@ class BitHumanHandler(AsyncAudioVideoStreamHandler):
                 self.pushed_duration, interrupted=True
             )
             logger.info(
-                f"audio playback interrupted, pushed_duration={self.pushed_duration}, interrupted={True}"
+                f"audio playback interrupted, pushed_duration={self.pushed_duration}, interrupted={True}"  # noqa: E501
             )
             self.pushed_duration = 0
 
