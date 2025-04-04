@@ -46,20 +46,6 @@ Set the path to your avatar model:
 export BITHUMAN_AVATAR_MODEL='/path/to/model/avatar.imx'
 ```
 
-### Creating a Runtime Instance
-
-All examples use the bitHuman Runtime (AsyncBithuman) to process audio and generate avatar animations. Here's a basic example of initialization:
-
-```python
-from bithuman.runtime import AsyncBithuman
-
-# Initialize with token
-runtime = await AsyncBithuman.create(token="your_token", model_path="/path/to/model.imx")
-
-# Or initialize with API secret for auto token refresh
-runtime = await AsyncBithuman.create(api_secret="your_api_secret", model_path="/path/to/model.imx")
-
-```
 
 ## Examples Overview
 
@@ -114,14 +100,24 @@ sdk-examples-python/
 └── fastrtc/               # FastRTC WebRTC example
 ```
 
-## Additional Resources
-
-- [Bithuman Documentation](https://docs.bithuman.io)
-- [LiveKit Agents](https://github.com/livekit/agents)
-
 ## API Overview
 
 The Bithuman Runtime API provides a powerful interface for creating interactive avatars:
+
+### Creating a Runtime Instance
+
+All examples use the bitHuman Runtime (AsyncBithuman) to process audio and generate avatar animations. Here's a basic example of initialization:
+
+```python
+from bithuman.runtime import AsyncBithuman
+
+# Initialize with token
+runtime = await AsyncBithuman.create(token="your_token", model_path="/path/to/model.imx")
+
+# Or initialize with API secret for auto token refresh
+runtime = await AsyncBithuman.create(api_secret="your_api_secret", model_path="/path/to/model.imx")
+
+```
 
 ### Core Components
 
@@ -155,3 +151,8 @@ The Bithuman Runtime API provides a powerful interface for creating interactive 
    - Each frame contains both visual data (BGR image) and the corresponding audio chunk
    - The example shows how to render these frames and play the audio in real-time
 
+
+## Additional Resources
+
+- [Bithuman Documentation](https://docs.bithuman.io)
+- [LiveKit Agents](https://github.com/livekit/agents)
