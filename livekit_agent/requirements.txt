@@ -1,0 +1,3 @@
+livekit-agents[openai,silero,deepgram,cartesia,turn-detector]>=1.0.0rc5
+bithuman>=0.4.8
+python-dotenv~=1.1
