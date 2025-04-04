@@ -1,63 +1,123 @@
-# Bithuman Runtime Example
+# bitHuman SDK Examples
 
-This example demonstrates how to use the Bithuman Runtime to create an interactive avatar that responds to audio input.
+This repository contains examples demonstrating how to use the bitHuman SDK to create interactive digital agents that respond to audio input. These examples showcase different ways to deploy and interact with bitHuman rendering SDK.
+
+## Prerequisites
+
+**Supported Python Versions:**
+- Python 3.10 to 3.13
+
+**Supported Operating Systems:**
+- Linux (x86_64 and arm64)
+- macOS (Apple Silicon, macOS >= 15)
 
 ## Installation
 
-1. System requirements
-
-   **Supported Python Versions:**
-   - Python 3.10
-   - Python 3.11
-   - Python 3.12
-   - Python 3.13
-
-   **Supported Operating Systems:**
-   - Linux (x86_64 and arm64)
-   - macOS (Apple Silicon)
-
-
-2. Install bithuman:
-   ```bash
-   pip install bithuman
-   ```
-
-3. Install the example dependencies for audio playing:
-   ```bash
-   pip install sounddevice
-   ```
-
-## Download Avatar Model
-
-You'll need a Bithuman avatar model (`.imx` file) to run the example. These models define the appearance and behavior of your virtual avatar.
-
-## Running the Example
-
-Run the example with the following command:
-
+1. Install the bitHuman SDK:
 ```bash
-export BITHUMAN_RUNTIME_TOKEN='your_access_token'
-
-python example.py --audio-file '/path/to/audio/file.mp3' --avatar-model '/path/to/model/avatar.imx' 
+pip install bithuman
 ```
 
+2. Install additional dependencies based on the example you want to run (see the README in each example folder).
 
-## Example Controls
+## Getting Started
 
-While the example is running, you can use the following keyboard controls:
-- Press `1`: Play the specified audio file through the avatar
-- Press `2`: Interrupt the current playback
-- Press `q`: Exit the application
+### Obtaining an API Token
 
-## How It Works
+You need a bitHuman API token to use these examples:
 
-The example demonstrates:
-1. Initializing the Bithuman Runtime with your API token
-2. Setting up audio and video players
-3. Processing audio input and rendering the avatar's response
-4. Handling user interactions
+1. Visit [bitHuman ImagineX](https://console.bithuman.io/imagineX) to sign up
+2. Create a new project and generate an API token
+3. Set your token as an environment variable:
 
-The avatar will animate in response to the audio input, creating a lifelike interactive experience.
+```bash
+# Use either an API token or API secret
+export BITHUMAN_RUNTIME_TOKEN='your_access_token'
+# OR
+export BITHUMAN_API_SECRET='your_api_secret'  # Will fetch temporal tokens periodically
+```
+
+### Models
+
+You'll need a bitHuman imagineX model (`.imx` file) to run these examples. These models define the appearance and behavior of your virtual avatar. You can download example models from [bitHuman docs](https://docs.bithuman.io/api-reference/sdk/quick-start).
+
+Set the path to your avatar model:
+```bash
+export BITHUMAN_AVATAR_MODEL='/path/to/model/avatar.imx'
+```
+
+### Creating a Runtime Instance
+
+All examples use the bitHuman Runtime (AsyncBithuman) to process audio and generate avatar animations. Here's a basic example of initialization:
+
+```python
+from bithuman.runtime import AsyncBithuman
+
+# Initialize with token
+runtime = await AsyncBithuman.create(token="your_token", model_path="/path/to/model.imx")
+
+# Or initialize with API secret for auto token refresh
+runtime = await AsyncBithuman.create(api_secret="your_api_secret", model_path="/path/to/model.imx")
+
+```
+
+## Examples Overview
+
+### 1. Avatar Echo
+
+Basic example that captures audio from your microphone, processes it with the bitHuman SDK, and displays the animated avatar in a local window.
+
+```bash
+python avatar/echo.py
+```
+
+### 2. LiveKit WebRTC Integration
+
+Stream a bitHuman avatar to a LiveKit room using WebRTC, while controlling the avatar's speech through a WebSocket interface.
+
+```bash
+# Start the server
+python livekit_webrtc/bithuman_server.py --room test
+
+# Send audio to the avatar
+python livekit_webrtc/websocket_client.py stream /path/audio.wav
+```
+
+### 3. LiveKit Agent
+
+Run an voice agent with bitHuman rendering capabilities:
+
+```bash
+# Run locally
+python livekit_agent/agent_local.py
+
+# Run in a LiveKit room
+python livekit_agent/agent_webrtc.py dev
+```
+
+### 4. FastRTC
+
+Run a LiveKit agent with FastRTC WebRTC implementation:
+
+```bash
+python fastrtc/fastrtc_example.py
+```
+
+## Directory Structure
+
+```
+sdk-examples-python/
+├── README.md              # This file
+├── avatar/                # Basic avatar example
+├── livekit_webrtc/        # LiveKit WebRTC integration example
+├── livekit_agent/         # LiveKit agent examples
+└── fastrtc/               # FastRTC WebRTC example
+```
+
+## Additional Resources
+
+- [Bithuman Documentation](https://docs.bithuman.io)
+- [LiveKit Agents](https://github.com/livekit/agents)
 
 ## API Overview
 
@@ -66,9 +126,8 @@ The Bithuman Runtime API provides a powerful interface for creating interactive 
 ### Core Components
 
 1. **AsyncBithuman**: The main class that handles communication with the Bithuman service.
-   - Initialize with your API token: `runtime = AsyncBithuman(token="your_token")`
-   - Set avatar model: `await runtime.set_avatar_model("path/to/model.imx")`
-   - Process audio: Send audio data to animate the avatar
+   - Initialize with your API token: `runtime = await AsyncBithuman.create(...)`
+
    - Interrupt: Cancel ongoing speech with `runtime.interrupt()`
 
 2. **AudioChunk**: Represents audio data for processing.
