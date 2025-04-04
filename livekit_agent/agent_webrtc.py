@@ -4,9 +4,7 @@ from collections.abc import AsyncGenerator, AsyncIterator
 
 import cv2
 import numpy as np
-from bithuman import AsyncBithuman
 from dotenv import load_dotenv
-
 from livekit import rtc
 from livekit.agents import JobContext, WorkerOptions, cli, utils
 from livekit.agents.voice import Agent, AgentSession
@@ -19,6 +17,8 @@ from livekit.agents.voice.avatar import (
 )
 from livekit.agents.voice.room_io import RoomOutputOptions
 from livekit.plugins import openai
+
+from bithuman import AsyncBithuman
 
 logger = logging.getLogger("agent-example")
 logger.setLevel(logging.INFO)
@@ -119,7 +119,7 @@ async def entrypoint(ctx: JobContext):
     secret = os.getenv("BITHUMAN_API_SECRET")
     if not avatar_model or (not token and not secret):
         raise ValueError(
-            "BITHUMAN_AVATAR_MODEL and BITHUMAN_RUNTIME_TOKEN or BITHUMAN_API_SECRET are required"
+            "BITHUMAN_AVATAR_MODEL and BITHUMAN_RUNTIME_TOKEN or BITHUMAN_API_SECRET are required"  # noqa: E501
         )
     bithuman_runtime = await AsyncBithuman.create(
         token=token, api_secret=secret, model_path=avatar_model

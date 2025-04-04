@@ -4,7 +4,6 @@ import json
 import os
 import signal
 import sys
-from typing import Dict, List
 
 import cv2
 import dotenv
@@ -61,7 +60,7 @@ class BithumanLiveKitStreamer:
 
         # Control flags
         self._running = False
-        self._connected_clients: Dict[str, websockets.WebSocketServerProtocol] = {}
+        self._connected_clients: dict[str, websockets.WebSocketServerProtocol] = {}
 
         # FPS controller for smooth video
         self._fps_controller = FPSController(target_fps=self.video_fps)
@@ -70,7 +69,7 @@ class BithumanLiveKitStreamer:
         self._audio_queue = asyncio.Queue[bytes]()
 
         # Tasks
-        self._tasks: List[asyncio.Task] = []
+        self._tasks: list[asyncio.Task] = []
         self._ws_server = None
 
     async def start(self):

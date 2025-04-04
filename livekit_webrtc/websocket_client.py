@@ -14,7 +14,7 @@ try:
     import soundfile as sf
 except ImportError:
     logger.error(
-        "soundfile and resampy are required to run this example, install with `pip install soundfile resampy`"
+        "soundfile and resampy are required to run this example, install with `pip install soundfile resampy`"  # noqa: E501
     )
     sys.exit(1)
 

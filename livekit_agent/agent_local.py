@@ -42,7 +42,7 @@ async def create_bithuman_runtime() -> AsyncBithuman:
 
     if not avatar_model or (not bithuman_token and not bithuman_api_secret):
         raise ValueError(
-            "BITHUMAN_AVATAR_MODEL and BITHUMAN_RUNTIME_TOKEN or BITHUMAN_API_SECRET are required"
+            "BITHUMAN_AVATAR_MODEL and BITHUMAN_RUNTIME_TOKEN or BITHUMAN_API_SECRET are required"  # noqa: E501
         )
 
     return await AsyncBithuman.create(

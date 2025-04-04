@@ -13,6 +13,6 @@ select = [
     "UP", # pyupgrade
 ]
 
-[isort]
+[lint.isort]
 combine-as-imports = true
 known-first-party = ["bithuman"]
