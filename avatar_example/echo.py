@@ -2,9 +2,10 @@ import argparse
 import asyncio
 import os
 import sys
-from typing import Optional
+from collections.abc import AsyncIterator
 
 from dotenv import load_dotenv
+from livekit import rtc
 from livekit.agents import AgentSession, utils
 from livekit.agents.voice.avatar import QueueAudioOutput
 from loguru import logger
@@ -21,40 +22,83 @@ logger.add(sys.stdout, level="INFO")
 
 @utils.log_exceptions(logger=logger)
 async def read_audio_from_microphone(
-    runtime: AsyncBithuman, audio_io: LocalAudioIO
+    runtime: AsyncBithuman, audio_io: LocalAudioIO, slient_threshold_db: int = -40
 ) -> None:
-    while True:
-        if audio_io._agent.input.audio is None:
-            await asyncio.sleep(0.1)
-            continue
-
-        logger.info("Audio input ready")
-        sample_rate = 24000
+    async def _read_audio(
+        audio_input: AsyncIterator[rtc.AudioFrame],
+        buffer: asyncio.Queue[rtc.AudioFrame],
+        sample_rate: int = 24000,
+    ):
         audio_stream = utils.audio.AudioByteStream(
             sample_rate=sample_rate,
             num_channels=1,
             samples_per_channel=sample_rate // 100,
         )
-        async for frame in audio_io._agent.input.audio:
+        async for frame in audio_input:
             for f in audio_stream.push(frame.data):
-                await runtime.push_audio(bytes(f.data), f.sample_rate, last_chunk=False)
+                await buffer.put(f)
+
+    async def _push_audio(buffer: asyncio.Queue[rtc.AudioFrame]):
+        last_speaking_time = asyncio.get_running_loop().time()
+        slient_timeout = 5  # seconds
+
+        while True:
+            frame = await buffer.get()
+            await runtime.push_audio(
+                bytes(frame.data), frame.sample_rate, last_chunk=False
+            )
+
+            current_time = asyncio.get_running_loop().time()
+            if audio_io._micro_db > slient_threshold_db:
+                last_speaking_time = current_time
+            elif current_time - last_speaking_time > slient_timeout:
+                # drop the frames if the buffer is big when the user is not speaking
+                while buffer.qsize() > 10:
+                    try:
+                        buffer.get_nowait()
+                    except asyncio.QueueEmpty:
+                        break
 
         await runtime.flush()
 
+    audio_buffer = asyncio.Queue[rtc.AudioFrame]()
 
-async def run_bithuman(
-    runtime: AsyncBithuman, audio_file: Optional[str] = None
-) -> None:
+    while True:
+        # wait for audio input
+        start_time = asyncio.get_running_loop().time()
+        if audio_io._agent.input.audio is None:
+            if asyncio.get_running_loop().time() - start_time > 20:
+                raise RuntimeError("No audio input connected after 20 seconds")
+            await asyncio.sleep(0.1)
+            continue
+
+        logger.info("Audio input ready")
+
+        read_audio_atask = asyncio.create_task(
+            _read_audio(audio_io._agent.input.audio, audio_buffer)
+        )
+        push_audio_atask = asyncio.create_task(_push_audio(audio_buffer))
+
+        await asyncio.gather(read_audio_atask, push_audio_atask)
+
+
+async def run_bithuman(runtime: AsyncBithuman) -> None:
     """Run the Bithuman runtime with audio and video players."""
     # Initialize Video Player and Audio Input
     audio_io = LocalAudioIO(AgentSession(), QueueAudioOutput(), buffer_size=3)
     await audio_io.start()
     push_audio_task = asyncio.create_task(read_audio_from_microphone(runtime, audio_io))
 
-    video_player = LocalVideoPlayer(window_size=runtime.get_frame_size(), buffer_size=3)
+    video_player = LocalVideoPlayer(
+        window_size=runtime.get_frame_size(),
+        buffer_size=3,  # use a small input buffer to avoid latency
+    )
     try:
         fps_controller = FPSController(target_fps=25)
-        async for frame in runtime.run(out_buffer_empty=video_player.buffer_empty):
+        async for frame in runtime.run(
+            out_buffer_empty=video_player.buffer_empty,
+            idle_timeout=0.5,  # increase the idle timeout since input audio is a stream
+        ):
             sleep_time = fps_controller.wait_next_frame(sleep=False)
             if sleep_time > 0:
                 await asyncio.sleep(sleep_time)
@@ -99,6 +143,7 @@ async def main(args: argparse.Namespace) -> None:
         token=args.token,
         api_secret=args.api_secret,
         insecure=args.insecure,
+        input_buffer_size=5,  # 5 frames, 10ms per frame
     )
 
     # Verify model was set successfully
@@ -111,7 +156,7 @@ async def main(args: argparse.Namespace) -> None:
 
     # Run the application with the main business logic
     logger.info("Starting runtime...")
-    await run_bithuman(runtime, args.audio_file)
+    await run_bithuman(runtime)
 
 
 if __name__ == "__main__":
@@ -125,7 +170,6 @@ if __name__ == "__main__":
         default=os.environ.get("BITHUMAN_RUNTIME_TOKEN"),
         help="JWT token for authentication (optional if --api-secret is provided)",
     )
-    parser.add_argument("--audio-file", type=str, default=None)
     parser.add_argument(
         "--api-secret",
         type=str,
