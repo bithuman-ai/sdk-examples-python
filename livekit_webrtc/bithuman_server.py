@@ -34,16 +34,16 @@ class BithumanLiveKitStreamer:
         self,
         runtime: AsyncBithuman,
         livekit_url: str,
-        api_key: str,
-        api_secret: str,
+        livekit_api_key: str,
+        livekit_api_secret: str,
         room_name: str,
         identity: str = "bithuman-avatar",
         ws_port: int = 8765,
     ):
         self.runtime = runtime
         self.livekit_url = livekit_url
-        self.api_key = api_key
-        self.api_secret = api_secret
+        self.livekit_api_key = livekit_api_key
+        self.livekit_api_secret = livekit_api_secret
         self.room_name = room_name
         self.identity = identity
         self.ws_port = ws_port
@@ -83,7 +83,9 @@ class BithumanLiveKitStreamer:
 
         # Create LiveKit token
         token = (
-            api.AccessToken(api_key=self.api_key, api_secret=self.api_secret)
+            api.AccessToken(
+                api_key=self.livekit_api_key, api_secret=self.livekit_api_secret
+            )
             .with_identity(self.identity)
             .with_name("Bithuman Avatar")
             .with_grants(
@@ -327,23 +329,24 @@ class BithumanLiveKitStreamer:
 async def main(args: argparse.Namespace) -> None:
     """Main function to run the example."""
     # Validate required arguments
-    assert args.token, "Bithuman token is required"
+    assert args.token or args.api_secret, "Bithuman token or API secret is required"
     assert args.livekit_url, "LiveKit URL is required"
-    assert args.api_key, "LiveKit API key is required"
-    assert args.api_secret, "LiveKit API secret is required"
+    assert args.livekit_api_key, "LiveKit API key is required"
+    assert args.livekit_api_secret, "LiveKit API secret is required"
     assert args.room, "LiveKit room name is required"
     assert args.avatar_model, "Avatar model is required"
 
     # Create Bithuman runtime
-    runtime = AsyncBithuman(token=args.token)
-    await runtime.set_model(args.avatar_model)
+    runtime = await AsyncBithuman.create(
+        token=args.token, api_secret=args.api_secret, model_path=args.avatar_model
+    )
 
     # Create streamer
     streamer = BithumanLiveKitStreamer(
         runtime=runtime,
         livekit_url=args.livekit_url,
-        api_key=args.api_key,
-        api_secret=args.api_secret,
+        livekit_api_key=args.livekit_api_key,
+        livekit_api_secret=args.livekit_api_secret,
         room_name=args.room,
         identity=args.identity,
         ws_port=args.ws_port,
@@ -374,13 +377,22 @@ if __name__ == "__main__":
 
     # Bithuman arguments
     parser.add_argument(
-        "--avatar-model", type=str, required=True, help="Bithuman avatar model name"
+        "--avatar-model",
+        type=str,
+        default=os.environ.get("BITHUMAN_AVATAR_MODEL"),
+        help="Bithuman avatar model name",
     )
     parser.add_argument(
         "--token",
         type=str,
         default=os.environ.get("BITHUMAN_RUNTIME_TOKEN"),
         help="Bithuman runtime token",
+    )
+    parser.add_argument(
+        "--api-secret",
+        type=str,
+        default=os.environ.get("BITHUMAN_API_SECRET"),
+        help="Bithuman API secret",
     )
 
     # LiveKit arguments
@@ -391,13 +403,13 @@ if __name__ == "__main__":
         help="LiveKit server URL",
     )
     parser.add_argument(
-        "--api-key",
+        "--livekit-api-key",
         type=str,
         default=os.environ.get("LIVEKIT_API_KEY"),
         help="LiveKit API key",
     )
     parser.add_argument(
-        "--api-secret",
+        "--livekit-api-secret",
         type=str,
         default=os.environ.get("LIVEKIT_API_SECRET"),
         help="LiveKit API secret",

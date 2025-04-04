@@ -20,7 +20,7 @@ from livekit.agents.voice.avatar import (
 from livekit.agents.voice.room_io import RoomOutputOptions
 from livekit.plugins import openai
 
-logger = logging.getLogger("avatar-example")
+logger = logging.getLogger("agent-example")
 logger.setLevel(logging.INFO)
 
 logging.getLogger("numba").setLevel(logging.WARNING)
@@ -29,13 +29,8 @@ load_dotenv()
 
 
 class BithumanGenerator(VideoGenerator):
-    def __init__(self, avatar_model: str, token: str):
-        self._runtime = AsyncBithuman(token=token)
-        self._avatar_model = avatar_model
-
-    async def start(self) -> None:
-        await self._runtime.set_model(self._avatar_model)
-        await self._runtime.start()
+    def __init__(self, bithuman_runtime: AsyncBithuman):
+        self._runtime = bithuman_runtime
 
     @property
     def video_resolution(self) -> tuple[int, int]:
@@ -57,12 +52,16 @@ class BithumanGenerator(VideoGenerator):
         if isinstance(frame, AudioSegmentEnd):
             await self._runtime.flush()
             return
-        await self._runtime.push_audio(bytes(frame.data), frame.sample_rate, last_chunk=False)
+        await self._runtime.push_audio(
+            bytes(frame.data), frame.sample_rate, last_chunk=False
+        )
 
     def clear_buffer(self) -> None:
         self._runtime.interrupt()
 
-    def __aiter__(self) -> AsyncIterator[rtc.VideoFrame | rtc.AudioFrame | AudioSegmentEnd]:
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[rtc.VideoFrame | rtc.AudioFrame | AudioSegmentEnd]:
         return self._stream_impl()
 
     async def _stream_impl(
@@ -117,11 +116,16 @@ async def entrypoint(ctx: JobContext):
     # create video generator
     avatar_model = os.getenv("BITHUMAN_AVATAR_MODEL")
     token = os.getenv("BITHUMAN_RUNTIME_TOKEN")
-    if not avatar_model or not token:
-        raise ValueError("BITHUMAN_AVATAR_MODEL and BITHUMAN_RUNTIME_TOKEN are required")
-    video_gen = BithumanGenerator(avatar_model=avatar_model, token=token)
-    await video_gen.start()
+    secret = os.getenv("BITHUMAN_API_SECRET")
+    if not avatar_model or (not token and not secret):
+        raise ValueError(
+            "BITHUMAN_AVATAR_MODEL and BITHUMAN_RUNTIME_TOKEN or BITHUMAN_API_SECRET are required"
+        )
+    bithuman_runtime = await AsyncBithuman.create(
+        token=token, api_secret=secret, model_path=avatar_model
+    )
 
+    video_gen = BithumanGenerator(bithuman_runtime)
     output_width, output_height = video_gen.video_resolution
     avatar_options = AvatarOptions(
         video_width=output_width,
