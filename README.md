@@ -22,19 +22,16 @@ pip install bithuman
 
 ## Getting Started
 
-### Obtaining an API Token
+### Obtaining an API Secret Key
 
-You need a bitHuman API token to use these examples:
+You need a bitHuman API secret key to use these examples:
 
 1. Visit [bitHuman ImagineX](https://console.bithuman.io/imagineX) to sign up
-2. Create a new project and generate an API token
-3. Set your token as an environment variable:
+2. Create a new API secret key
+3. Set your API secret key in your config file
 
 ```bash
-# Use either an API token or API secret
-export BITHUMAN_RUNTIME_TOKEN='your_access_token'
-# OR
-export BITHUMAN_API_SECRET='your_api_secret'  # Will fetch temporal tokens periodically
+export BITHUMAN_API_SECRET='your_api_secret'
 ```
 
 ### Models
@@ -110,11 +107,6 @@ All examples use the bitHuman Runtime (AsyncBithuman) to process audio and gener
 
 ```python
 from bithuman.runtime import AsyncBithuman
-
-# Initialize with token
-runtime = await AsyncBithuman.create(token="your_token", model_path="/path/to/model.imx")
-
-# Or initialize with API secret for auto token refresh
 runtime = await AsyncBithuman.create(api_secret="your_api_secret", model_path="/path/to/model.imx")
 
 ```
@@ -122,7 +114,7 @@ runtime = await AsyncBithuman.create(api_secret="your_api_secret", model_path="/
 ### Core Components
 
 1. **AsyncBithuman**: The main class that handles communication with the Bithuman service.
-   - Initialize with your API token: `runtime = await AsyncBithuman.create(...)`
+   - Initialize with your API secret key: `runtime = await AsyncBithuman.create(...)`
 
    - Interrupt: Cancel ongoing speech with `runtime.interrupt()`
 
