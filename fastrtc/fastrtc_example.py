@@ -17,7 +17,6 @@ from livekit.plugins import openai
 from numpy.typing import NDArray
 
 from bithuman import AsyncBithuman
-from bithuman.utils import FPSController
 from fastrtc import (
     AsyncAudioVideoStreamHandler,
     AudioEmitType,
@@ -93,13 +92,12 @@ class BitHumanHandler(AsyncAudioVideoStreamHandler):
         self.last_text_input = ""
 
         # output queues
-        self.video_queue = asyncio.Queue[NDArray[np.uint8]]()
-        self.audio_queue = asyncio.Queue[tuple[int, NDArray[np.int16]]]()
+        self.video_queue = asyncio.Queue[NDArray[np.uint8]](maxsize=2)
+        self.audio_queue = asyncio.Queue[tuple[int, NDArray[np.int16]]](maxsize=0)
 
         # bithuman runtime
         self.runtime: AsyncBithuman | None = None
         self.runtime_ready = asyncio.Event()
-        self.fps_controller = FPSController(target_fps=25)
 
         # agent
         self.agent_session: AgentSession | None = None
@@ -152,18 +150,14 @@ class BitHumanHandler(AsyncAudioVideoStreamHandler):
         assert self.runtime is not None
 
         async for frame in self.runtime.run():
+            if frame.has_image:
+                await self.video_queue.put(frame.bgr_image)
+
             if frame.audio_chunk is not None:
                 await self.audio_queue.put(
                     (frame.audio_chunk.sample_rate, frame.audio_chunk.data)
                 )
                 self.pushed_duration += frame.audio_chunk.duration
-
-            if frame.has_image:
-                sleep_time = self.fps_controller.wait_next_frame(sleep=False)
-                await asyncio.sleep(sleep_time)
-                await self.video_queue.put(frame.bgr_image)
-
-                self.fps_controller.update()
 
             if frame.end_of_speech and self.pushed_duration > 0:
                 # notify agent that audio has played
