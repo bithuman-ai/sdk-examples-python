@@ -37,16 +37,15 @@ class AlloyVoiceAgent(Agent):
 async def create_bithuman_runtime() -> AsyncBithuman:
     """Create and initialize the BitHuman runtime."""
     avatar_model = os.getenv("BITHUMAN_AVATAR_MODEL")
-    bithuman_token = os.getenv("BITHUMAN_RUNTIME_TOKEN")
     bithuman_api_secret = os.getenv("BITHUMAN_API_SECRET")
 
-    if not avatar_model or (not bithuman_token and not bithuman_api_secret):
+    if not (avatar_model or bithuman_api_secret):
         raise ValueError(
-            "BITHUMAN_AVATAR_MODEL and BITHUMAN_RUNTIME_TOKEN or BITHUMAN_API_SECRET are required"  # noqa: E501
+            "BITHUMAN_AVATAR_MODEL and BITHUMAN_API_SECRET are required"  # noqa: E501
         )
 
     return await AsyncBithuman.create(
-        model_path=avatar_model, token=bithuman_token, api_secret=bithuman_api_secret
+        model_path=avatar_model, api_secret=bithuman_api_secret
     )
 
 
