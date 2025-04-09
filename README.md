@@ -28,31 +28,37 @@ You need a bitHuman API secret key to use these examples:
 
 1. Visit [bitHuman ImagineX](https://console.bithuman.io/imagineX) to sign up
 2. Create a new API secret key
-3. Set your API secret key in your config file
+3. Set your API secret key in your .env file
 
 ```bash
-export BITHUMAN_API_SECRET='your_api_secret'
+BITHUMAN_API_SECRET='your_api_secret'
 ```
 
 ### Models
 
 You'll need a bitHuman imagineX model (`.imx` file) to run these examples. These models define the appearance and behavior of your virtual avatar. You can download example models from [bitHuman docs](https://docs.bithuman.io/api-reference/sdk/quick-start).
 
-Set the path to your avatar model:
+Set the path to your avatar model in your .env file:
 ```bash
-export BITHUMAN_AVATAR_MODEL='/path/to/model/avatar.imx'
+BITHUMAN_AVATAR_MODEL='/path/to/model/avatar.imx'
 ```
 
 
 ## Examples Overview
+### 1. LiveKit Agent
 
-### 1. Avatar Echo
+Run a visual agent using bitHuman for visual rendering, OpenAI Realtime API for voice-to-voice and LiveKit for orchestration.
 
-Basic example that captures audio from your microphone, processes it with the bitHuman SDK, and displays the animated avatar in a local window.
+Make sure to add OPENAI_API_KEY for voice response, and to run a LiveKit room with webrtc, add LIVEKIT_API_KEY to your .env file.
 
 ```bash
-python avatar/echo.py
+# Run locally
+python livekit_agent/agent_local.py
+
+# Run in a LiveKit room
+python livekit_agent/agent_webrtc.py dev
 ```
+
 
 ### 2. LiveKit WebRTC Integration
 
@@ -66,16 +72,12 @@ python livekit_webrtc/bithuman_server.py --room test
 python livekit_webrtc/websocket_client.py stream /path/audio.wav
 ```
 
-### 3. LiveKit Agent
+### 3. Avatar Echo
 
-Run an voice agent with bitHuman rendering capabilities:
+Basic example that captures audio from your microphone, processes it with the bitHuman SDK, and displays the animated avatar in a local window.
 
 ```bash
-# Run locally
-python livekit_agent/agent_local.py
-
-# Run in a LiveKit room
-python livekit_agent/agent_webrtc.py dev
+python avatar/echo.py
 ```
 
 ### 4. FastRTC
