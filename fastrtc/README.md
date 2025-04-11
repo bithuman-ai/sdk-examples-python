@@ -26,10 +26,10 @@ pip install -r requirements.txt
 
 ## Configuration
 
-Set your bitHuman token and avatar model path as environment variables:
+Set your bitHuman API secret key and avatar model path as environment variables:
 
 ```bash
-export BITHUMAN_RUNTIME_TOKEN='your_access_token'
+export BITHUMAN_API_SECRET='your_api_secret'
 export BITHUMAN_AVATAR_MODEL='/path/to/model/avatar.imx'
 ```
 
@@ -45,7 +45,7 @@ python fastrtc_example.py
 
 The example demonstrates:
 
-1. Initializing the bitHuman Runtime with your API token
+1. Initializing the bitHuman Runtime with your API secret key
 2. Setting up FastRTC WebRTC connections
 3. Capturing audio input from participants
 4. Processing audio input with bitHuman Runtime
@@ -55,7 +55,7 @@ The example demonstrates:
 
 - For WebRTC connection issues, check network connectivity and firewall settings
 - If the avatar doesn't appear, verify your avatar model path
-- For token-related errors, check that your Bithuman API token is valid
+- For API-related errors, check that your Bithuman API secret key is valid
 
 ## Resources
 
