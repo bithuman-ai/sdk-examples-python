@@ -74,9 +74,9 @@ class AlloyAgent(Agent):
 
 class BitHumanHandler(AsyncAudioVideoStreamHandler):
     avatar_name_to_file = {
-        "einstein": str((Path(MODEL_ROOT) / "albert_einstein.imx").resolve()),
+        "einstein": str((Path(MODEL_ROOT) / "einstein.imx").resolve()),
         "dog": str((Path(MODEL_ROOT) / "dog.imx").resolve()),
-        "dating_coach": str((Path(MODEL_ROOT) / "dating_coach.imx").resolve()),
+        "companion": str((Path(MODEL_ROOT) / "companion.imx").resolve()),
     }
 
     def __init__(self):
@@ -108,7 +108,7 @@ class BitHumanHandler(AsyncAudioVideoStreamHandler):
     @utils.log_exceptions(logger=logger)
     async def start_up(self):
         await self.wait_for_args()
-        _, bithuman_api_key, avatar_name = self.latest_args[1:]
+        _, bithuman_api_secret, avatar_name = self.latest_args[1:]
 
         # setup agent
         utils.http_context._new_session_ctx()
@@ -126,7 +126,7 @@ class BitHumanHandler(AsyncAudioVideoStreamHandler):
         # setup bithuman runtime
         logger.info("loading bithuman runtime")
         self.runtime = await AsyncBithuman.create(
-            token=bithuman_api_key,
+            api_secret=bithuman_api_secret,
             model_path=self.avatar_name_to_file[avatar_name],
         )
         await self.runtime.start()
@@ -291,11 +291,11 @@ stream = Stream(
             label="Message", value="", info="Type what you want the avatar to say"
         ),
         gr.Textbox(
-            label="API Key", type="password", value=os.getenv("BITHUMAN_RUNTIME_TOKEN")
+            label="API Key", type="password", value=os.getenv("BITHUMAN_API_SECRET")
         ),
         gr.Dropdown(
-            choices=["einstein", "dog", "dating_coach"],
-            value="dating_coach",
+            choices=["einstein", "dog", "companion"],
+            value="companion",
             label="Avatar",
         ),
     ],
