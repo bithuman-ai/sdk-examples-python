@@ -1,6 +1,6 @@
-# bitHuman SDK Examples
+# SDK Quick Start with Examples
 
-This repository contains examples demonstrating how to use the bitHuman SDK to create interactive digital agents that respond to audio input. These examples showcase different ways to deploy and interact with bitHuman rendering SDK.
+bitHuman SDK enables you to build interactive agents that respond realistically to audio input. This guide covers installation instructions, a hands-on example, and an overview of the core API features.
 
 ## Prerequisites
 
