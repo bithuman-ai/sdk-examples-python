@@ -58,6 +58,10 @@ python livekit_agent/agent_local.py
 # Run in a LiveKit room
 python livekit_agent/agent_webrtc.py dev
 ```
+<td width="100%">
+<h4>Albert Einstein Agent Example</h4>
+<video width="100%" src="https://github.com/user-attachments/assets/99081a20-bc17-43c4-afbc-3dcf4f274227" controls></video>
+</td>
 
 
 ### 2. LiveKit WebRTC Integration
