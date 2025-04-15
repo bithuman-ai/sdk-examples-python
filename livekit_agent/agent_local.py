@@ -6,13 +6,14 @@ import sys
 
 import numpy as np
 from dotenv import load_dotenv
-from livekit.agents import utils
-from livekit.agents.voice import Agent, AgentSession
+from livekit.agents import metrics, utils
+from livekit.agents.voice import Agent, AgentSession, MetricsCollectedEvent
 from livekit.agents.voice.avatar import AvatarOptions, QueueAudioOutput
-from livekit.plugins import openai
+from livekit.plugins import cartesia, deepgram, openai, silero
 from loguru import logger
 
 from bithuman import AsyncBithuman
+from bithuman.plugins.stt import BithumanLocalSTT
 from bithuman.utils.agent import LocalAudioIO, LocalAvatarRunner, LocalVideoPlayer
 
 # Configure logging
@@ -30,7 +31,20 @@ class AlloyVoiceAgent(Agent):
     def __init__(self) -> None:
         super().__init__(
             instructions="You are Alloy.",
-            llm=openai.realtime.RealtimeModel(voice="alloy"),
+            # llm=openai.realtime.RealtimeModel(voice="alloy"),
+            vad=silero.VAD.load(),
+            # any combination of STT, LLM, TTS, or realtime API can be used
+            llm=openai.LLM(model="gpt-4o-mini"),
+            # stt=deepgram.STT(model="nova-3", language="multi"),
+            stt=BithumanLocalSTT(),
+            # tts=openai.TTS(
+            #     model="kokoro",
+            #     voice="af_alloy",
+            #     api_key="not-needed",
+            #     base_url="http://localhost:8880/v1",
+            #     response_format="wav",
+            # ),
+            tts=cartesia.TTS(),
         )
 
 
@@ -107,6 +121,10 @@ async def entrypoint() -> None:
 
     # Start agent
     await session.start(agent=AlloyVoiceAgent())
+
+    @session.on("metrics_collected")
+    def _on_metrics_collected(ev: MetricsCollectedEvent):
+        metrics.log_metrics(ev.metrics, logger=logger)
 
 
 async def main() -> None:

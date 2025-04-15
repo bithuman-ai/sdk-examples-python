@@ -6,7 +6,14 @@ import cv2
 import numpy as np
 from dotenv import load_dotenv
 from livekit import rtc
-from livekit.agents import JobContext, WorkerOptions, cli, utils
+from livekit.agents import (
+    JobContext,
+    JobExecutorType,
+    JobProcess,
+    WorkerOptions,
+    cli,
+    utils,
+)
 from livekit.agents.voice import Agent, AgentSession
 from livekit.agents.voice.avatar import (
     AudioSegmentEnd,
@@ -16,9 +23,10 @@ from livekit.agents.voice.avatar import (
     VideoGenerator,
 )
 from livekit.agents.voice.room_io import RoomOutputOptions
-from livekit.plugins import openai
+from livekit.plugins import cartesia, deepgram, openai, silero
 
 from bithuman import AsyncBithuman
+from bithuman.plugins.stt import BithumanLocalSTT
 
 logger = logging.getLogger("agent-example")
 logger.setLevel(logging.INFO)
@@ -102,7 +110,21 @@ class AlloyAgent(Agent):
     def __init__(self) -> None:
         super().__init__(
             instructions="You are Alloy.",
-            llm=openai.realtime.RealtimeModel(voice="alloy"),
+            # llm=openai.realtime.RealtimeModel(voice="alloy"),
+            # vad=silero.VAD.load(),
+            # any combination of STT, LLM, TTS, or realtime API can be used
+            # llm=openai.LLM(model="gpt-4o-mini"),
+            llm=openai.LLM.with_ollama(model="llama3.2:3b"),
+            # stt=deepgram.STT(model="nova-3", language="multi"),
+            stt=BithumanLocalSTT(),
+            # tts=openai.TTS(
+            #     model="kokoro",
+            #     voice="af_alloy",
+            #     api_key="not-needed",
+            #     base_url="http://localhost:8880/v1",
+            #     response_format="wav",
+            # ),
+            tts=cartesia.TTS(),
         )
 
 
@@ -110,7 +132,7 @@ async def entrypoint(ctx: JobContext):
     await ctx.connect()
 
     # create agent
-    session = AgentSession()
+    session = AgentSession(vad=ctx.proc.userdata["vad"])
     session.output.audio = QueueAudioOutput()
 
     # create video generator
@@ -154,5 +176,16 @@ async def entrypoint(ctx: JobContext):
     )
 
 
+def prewarm(proc: JobProcess):
+    proc.userdata["vad"] = silero.VAD.load()
+
+
 if __name__ == "__main__":
-    cli.run_app(WorkerOptions(entrypoint_fnc=entrypoint, job_memory_warn_mb=1500))
+    cli.run_app(
+        WorkerOptions(
+            entrypoint_fnc=entrypoint,
+            job_memory_warn_mb=1500,
+            prewarm_fnc=prewarm,
+            job_executor_type=JobExecutorType.THREAD,
+        )
+    )
