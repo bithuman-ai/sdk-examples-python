@@ -1,6 +1,6 @@
-# SDK Quick Start with Examples
+# bitHuman SDK Examples
 
-bitHuman SDK enables you to build interactive agents that respond realistically to audio input. This guide covers installation instructions, a hands-on example, and an overview of the core API features.
+bitHuman SDK enables you to build interactive agents that respond realistically to audio input. This repository contains comprehensive examples demonstrating various use cases and integrations.
 
 ## Prerequisites
 
@@ -11,6 +11,38 @@ bitHuman SDK enables you to build interactive agents that respond realistically 
 - Linux (x86_64 and arm64)
 - macOS (Apple Silicon, macOS >= 15)
 
+## Setup
+
+### 1. Register and Get API Secret
+
+1. Go to [https://console.bithuman.io](https://console.bithuman.io) and register for free
+2. After registration, navigate to the **SDK** page to create a new API secret
+3. Copy your API secret for use in the examples
+
+### 2. Download Avatar Model
+
+You'll need a bitHuman avatar model (`.imx` file) to run these examples. These models define the appearance and behavior of your virtual avatar.
+
+1. Visit the [Community page](https://console.bithuman.io/#community)
+2. Browse the available avatar models
+3. Click on any agent card to download the `.imx` model file directly
+
+### 3. Environment Setup
+
+Set your API secret and model path as environment variables:
+
+```bash
+export BITHUMAN_API_SECRET='your_api_secret'
+export BITHUMAN_AVATAR_MODEL='/path/to/model/avatar.imx'
+```
+
+Or create a `.env` file in the project root:
+
+```bash
+BITHUMAN_API_SECRET='your_api_secret'
+BITHUMAN_AVATAR_MODEL='/path/to/model/avatar.imx'
+```
+
 ## Installation
 
 1. Install the bitHuman SDK:
@@ -20,137 +52,187 @@ pip install bithuman
 
 2. Install additional dependencies based on the example you want to run (see the README in each example folder).
 
-## Getting Started
-
-### Obtaining an API Secret Key
-
-You need a bitHuman API secret key to use these examples:
-
-1. Visit [bitHuman ImagineX](https://console.bithuman.io/imagineX) to sign up
-2. Create a new API secret key
-3. Set your API secret key in your .env file
-
-```bash
-BITHUMAN_API_SECRET='your_api_secret'
-```
-
-### Models
-
-You'll need a bitHuman imagineX model (`.imx` file) to run these examples. These models define the appearance and behavior of your virtual avatar. You can download example models from [bitHuman docs](https://docs.bithuman.io/api-reference/sdk/quick-start).
-
-Set the path to your avatar model in your .env file:
-```bash
-BITHUMAN_AVATAR_MODEL='/path/to/model/avatar.imx'
-```
-
-
 ## Examples Overview
-### 1. LiveKit Agent
 
-Run a visual agent using bitHuman for visual rendering, OpenAI Realtime API for voice-to-voice and LiveKit for orchestration.
+### 1. Basic Usage (`basic_usage/`)
 
-Make sure to add OPENAI_API_KEY for voice response, and to run a LiveKit room with webrtc, add LIVEKIT_API_KEY to your .env file.
+Simple keyboard-controlled example that demonstrates core functionality with audio file playback.
 
 ```bash
+cd basic_usage
+pip install sounddevice
+python example.py --audio-file <audio_file> --model <model_file>
+```
+
+**Features:**
+- Load and play audio files through the avatar
+- Keyboard controls (play, interrupt, quit)
+- Basic audio and video rendering
+
+### 2. Avatar Echo (`avatar/`)
+
+Real-time microphone input processing with local avatar display.
+
+```bash
+cd avatar
+pip install -r requirements.txt
+python echo.py
+```
+
+**Features:**
+- Real-time microphone audio capture
+- Live avatar animation
+- Local video window display
+- Audio echo processing
+
+### 3. LiveKit Agent (`livekit_agent/`)
+
+AI-powered conversational agent using OpenAI Realtime API with bitHuman visual rendering.
+
+```bash
+cd livekit_agent
+pip install -r requirements.txt
+
+# Add to your .env:
+# OPENAI_API_KEY=your_openai_key
+# LIVEKIT_URL=wss://your-livekit-server.com (for WebRTC)
+# LIVEKIT_API_KEY=your_livekit_key (for WebRTC)
+# LIVEKIT_API_SECRET=your_livekit_secret (for WebRTC)
+
 # Run locally
-python livekit_agent/agent_local.py
+python agent_local.py
 
 # Run in a LiveKit room
-python livekit_agent/agent_webrtc.py dev
+python agent_webrtc.py dev
 ```
+
+**Features:**
+- OpenAI Realtime API integration
+- Voice-to-voice conversations
+- Live avatar responses
+- Local and WebRTC deployment options
+
+<table>
 <td width="100%">
 <h4>Albert Einstein Agent Example</h4>
 <video width="100%" src="https://github.com/user-attachments/assets/99081a20-bc17-43c4-afbc-3dcf4f274227" controls></video>
 </td>
+</table>
 
+### 4. LiveKit WebRTC Integration (`livekit_webrtc/`)
 
-### 2. LiveKit WebRTC Integration
-
-Stream a bitHuman avatar to a LiveKit room using WebRTC, while controlling the avatar's speech through a WebSocket interface.
+Stream bitHuman avatars to LiveKit rooms with WebSocket control interface.
 
 ```bash
+cd livekit_webrtc
+pip install -r requirements.txt
+
+# Add to your .env:
+# LIVEKIT_URL=wss://your-livekit-server.com
+# LIVEKIT_API_KEY=your_livekit_key
+# LIVEKIT_API_SECRET=your_livekit_secret
+
 # Start the server
-python livekit_webrtc/bithuman_server.py --room test
+python bithuman_server.py --room test_room
 
-# Send audio to the avatar
-python livekit_webrtc/websocket_client.py stream /path/audio.wav
+# Send audio to the avatar (in another terminal)
+python websocket_client.py stream /path/to/audio.wav
 ```
 
-### 3. Avatar Echo
+**Features:**
+- WebRTC streaming to multiple viewers
+- WebSocket-based audio control
+- Real-time avatar animation
+- Multi-user viewing capabilities
 
-Basic example that captures audio from your microphone, processes it with the bitHuman SDK, and displays the animated avatar in a local window.
+### 5. FastRTC (`fastrtc/`)
+
+Simplified WebRTC implementation using FastRTC library.
 
 ```bash
-python avatar/echo.py
+cd fastrtc
+pip install -r requirements.txt
+python fastrtc_example.py
 ```
 
-### 4. FastRTC
-
-Run a LiveKit agent with FastRTC WebRTC implementation:
-
-```bash
-python fastrtc/fastrtc_example.py
-```
+**Features:**
+- Simplified WebRTC setup
+- Similar capabilities to LiveKit
+- Alternative WebRTC implementation
 
 ## Directory Structure
 
 ```
 sdk-examples-python/
-├── README.md              # This file
-├── avatar/                # Basic avatar example
-├── livekit_webrtc/        # LiveKit WebRTC integration example
-├── livekit_agent/         # LiveKit agent examples
-└── fastrtc/               # FastRTC WebRTC example
+├── README.md                    # This file
+├── .gitignore                   # Git ignore patterns
+├── ruff.toml                    # Python linting configuration
+├── basic_usage/                 # Simple keyboard-controlled example
+│   ├── example.py
+│   └── README.md
+├── avatar/                      # Microphone echo example
+│   ├── echo.py
+│   ├── requirements.txt
+│   └── README.md
+├── livekit_agent/              # AI agent with OpenAI integration
+│   ├── agent_local.py
+│   ├── agent_webrtc.py
+│   ├── requirements.txt
+│   └── README.md
+├── livekit_webrtc/             # LiveKit WebRTC streaming
+│   ├── bithuman_server.py
+│   ├── websocket_client.py
+│   ├── requirements.txt
+│   └── README.md
+└── fastrtc/                    # FastRTC WebRTC example
+    ├── fastrtc_example.py
+    ├── requirements.txt
+    └── README.md
 ```
 
 ## API Overview
 
-The Bithuman Runtime API provides a powerful interface for creating interactive avatars:
-
 ### Creating a Runtime Instance
 
-All examples use the bitHuman Runtime (AsyncBithuman) to process audio and generate avatar animations. Here's a basic example of initialization:
+All examples use the bitHuman Runtime (`AsyncBithuman`) to process audio and generate avatar animations:
 
 ```python
 from bithuman.runtime import AsyncBithuman
-runtime = await AsyncBithuman.create(api_secret="your_api_secret", model_path="/path/to/model.imx")
 
+# Initialize with API secret and model path
+runtime = await AsyncBithuman.create(
+    api_secret="your_api_secret", 
+    model_path="/path/to/model.imx"
+)
 ```
 
 ### Core Components
 
-1. **AsyncBithuman**: The main class that handles communication with the Bithuman service.
-   - Initialize with your API secret key: `runtime = await AsyncBithuman.create(...)`
+1. **AsyncBithuman**: Main class for avatar processing
+   - Initialize with API secret: `await AsyncBithuman.create(...)`
+   - Process audio input to generate avatar animations
+   - Interrupt ongoing speech: `runtime.interrupt()`
 
-   - Interrupt: Cancel ongoing speech with `runtime.interrupt()`
-
-2. **AudioChunk**: Represents audio data for processing.
-   - Accepts 16kHz, mono, int16 format audio
+2. **AudioChunk**: Audio data representation
+   - Supports 16kHz, mono, int16 format
    - Can be created from bytes or numpy arrays
-   - Provides duration and format conversion utilities
+   - Provides duration and format utilities
 
-3. **VideoFrame**: Contains the output from the runtime.
+3. **VideoFrame**: Avatar output data
    - BGR image data (numpy array)
    - Synchronized audio chunks
    - Frame metadata (index, message ID)
 
-
 ### Input/Output Flow
 
-1. **Input**:
-   - Send audio data (16kHz, mono, int16 format) to the runtime
-   - The runtime processes this input to generate appropriate avatar animations
+1. **Input**: Send 16kHz, mono, int16 audio data to the runtime
+2. **Processing**: Runtime analyzes audio for facial movements and expressions
+3. **Output**: 25 FPS video frames with synchronized audio chunks
 
-2. **Processing**:
-   - The runtime analyzes the audio to determine appropriate facial movements and expressions
-   - Frames are generated at 25 FPS with synchronized audio
+## Getting Help
 
-3. **Output**:
-   - Each frame contains both visual data (BGR image) and the corresponding audio chunk
-   - The example shows how to render these frames and play the audio in real-time
-
-
-## Additional Resources
-
-- [Bithuman Documentation](https://docs.bithuman.io)
+- [bitHuman Documentation](https://docs.bithuman.io)
+- [bitHuman Console](https://console.bithuman.io)
 - [LiveKit Agents](https://github.com/livekit/agents)
+
+For questions or issues, visit the [Community page](https://console.bithuman.io/#community) or check the documentation.

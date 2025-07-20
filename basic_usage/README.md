@@ -27,18 +27,29 @@ This example demonstrates how to use the Bithuman Runtime to create an interacti
    pip install sounddevice
    ```
 
-## Download Avatar Model
+## Setup
+
+### 1. Register and Get API Secret
+
+1. Go to [https://console.bithuman.io](https://console.bithuman.io) and register for free
+2. After registration, navigate to the **SDK** page to create a new API secret
+3. Copy your API secret for use in the example
+
+### 2. Download Avatar Model
 
 You'll need a Bithuman avatar model (`.imx` file) to run the example. These models define the appearance and behavior of your virtual avatar.
+
+1. Visit the [Community page](https://console.bithuman.io/#community)
+2. Browse the available avatar models
+3. Click on any agent card to download the `.imx` model file directly
 
 ## Running the Example
 
 Run the example with the following command:
 
 ```bash
-export BITHUMAN_RUNTIME_TOKEN='your_access_token'
-
-python example.py --audio-file '/path/to/audio/file.mp3' --avatar-model '/path/to/model/avatar.imx' 
+export BITHUMAN_API_SECRET='your_api_secret'
+python example.py --audio-file <audio file> --model <model file>
 ```
 
 
@@ -52,7 +63,7 @@ While the example is running, you can use the following keyboard controls:
 ## How It Works
 
 The example demonstrates:
-1. Initializing the Bithuman Runtime with your API token
+1. Initializing the Bithuman Runtime with your API secret
 2. Setting up audio and video players
 3. Processing audio input and rendering the avatar's response
 4. Handling user interactions
@@ -66,7 +77,7 @@ The Bithuman Runtime API provides a powerful interface for creating interactive 
 ### Core Components
 
 1. **AsyncBithuman**: The main class that handles communication with the Bithuman service.
-   - Initialize with your API token: `runtime = AsyncBithuman(token="your_token")`
+   - Initialize with your API secret: `runtime = AsyncBithuman(api_secret="your_api_secret")`
    - Set avatar model: `await runtime.set_avatar_model("path/to/model.imx")`
    - Process audio: Send audio data to animate the avatar
    - Interrupt: Cancel ongoing speech with `runtime.interrupt()`
