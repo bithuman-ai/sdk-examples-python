@@ -341,7 +341,7 @@ After preparing your images:
 
 ## Community Examples
 
-Visit our [Community Hub](https://console.bithuman.io/#community) to see:
+Visit our [Community Hub](https://www.bithuman.ai/#community) to see:
 - Successful image examples
 - Before/after comparisons
 - Style variations

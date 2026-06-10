@@ -389,7 +389,7 @@ After preparing your voice sample:
 
 ### Community Examples
 
-Visit our [Community Hub](https://console.bithuman.io/#community) to:
+Visit our [Community Hub](https://www.bithuman.ai/#community) to:
 - Hear successful voice examples
 - Compare different styles
 - Learn from other creators

@@ -1122,6 +1122,6 @@ To enhance your LiveKit integration:
 - **[LiveKit Documentation](https://docs.livekit.io/)** - Complete LiveKit guides
 - **[LiveKit Agents](https://github.com/livekit/agents)** - AI agent framework
 - **[WebRTC Best Practices](https://webrtc.org/)** - WebRTC optimization
-- **[Community Examples](https://console.bithuman.io/#community)** - See other integrations
+- **[Community Examples](https://www.bithuman.ai/#community)** - See other integrations
 
 LiveKit integration opens up endless possibilities for real-time avatar experiences. Start building amazing interactive applications today! 

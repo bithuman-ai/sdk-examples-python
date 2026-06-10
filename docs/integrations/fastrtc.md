@@ -994,6 +994,6 @@ To enhance your FastRTC integration:
 - **[FastRTC Documentation](https://github.com/aiortc/aiortc)** - Complete FastRTC guides
 - **[WebRTC Standards](https://webrtc.org/)** - WebRTC specifications
 - **[MDN WebRTC Guide](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API)** - Browser WebRTC APIs
-- **[Community Examples](https://console.bithuman.io/#community)** - More integration examples
+- **[Community Examples](https://www.bithuman.ai/#community)** - More integration examples
 
 FastRTC provides a lightweight, flexible approach to WebRTC integration with bitHuman avatars. Perfect for custom applications requiring direct control over the WebRTC pipeline! 

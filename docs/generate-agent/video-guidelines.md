@@ -517,7 +517,7 @@ After optimizing video characteristics:
 
 ### Community Examples
 
-Visit our [Community Hub](https://console.bithuman.io/#community) to:
+Visit our [Community Hub](https://www.bithuman.ai/#community) to:
 - See animation examples
 - Compare different styles
 - Learn optimization techniques

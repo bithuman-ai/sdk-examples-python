@@ -59,5 +59,5 @@ The example demonstrates:
 
 ## Resources
 
-- [bitHuman Documentation](https://docs.bithuman.io)
+- [bitHuman Documentation](https://docs.bithuman.ai)
 - [FastRTC Documentation](https://fastrtc.org) 

@@ -129,7 +129,7 @@ In this Getting Started section, you'll learn how to:
 ## Getting Help
 
 - 📖 **Documentation**: Complete guides and API reference
-- 🌟 **[Community Hub](https://console.bithuman.io/#community)**: Download models and examples
+- 🌟 **[Community Hub](https://www.bithuman.ai/#community)**: Download models and examples
 - 💬 **Discord**: Join our developer community
 - 🐛 **GitHub Issues**: Report bugs and request features
 

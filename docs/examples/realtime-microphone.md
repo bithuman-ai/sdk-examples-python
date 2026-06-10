@@ -1282,6 +1282,6 @@ After mastering real-time microphone avatars:
 - **[Audio Processing Guide](../generate-agent/voice-guidelines.md)** - Optimize audio quality
 - **[Performance Optimization](../build/gpu-cloud.md)** - Achieve better real-time performance
 - **[WebRTC Integration](../integrations/fastrtc.md)** - Stream avatars over the internet
-- **[Community Examples](https://console.bithuman.io/#community)** - More real-time avatar examples
+- **[Community Examples](https://www.bithuman.ai/#community)** - More real-time avatar examples
 
 Real-time microphone avatars open up endless possibilities for interactive applications. Start building engaging, responsive avatar experiences today! 

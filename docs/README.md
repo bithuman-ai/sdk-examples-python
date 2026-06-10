@@ -18,8 +18,8 @@ bitHuman SDK enables developers to create lifelike digital avatars that can resp
 
 Get up and running with bitHuman SDK in just a few steps:
 
-1. **[Register for free](https://console.bithuman.io)** and get your API secret
-2. **[Download an avatar model](https://console.bithuman.io/#community)** (.imx file)
+1. **[Register for free](https://www.bithuman.ai)** and get your API secret
+2. **[Download an avatar model](https://www.bithuman.ai/#community)** (.imx file)
 3. **[Install the SDK](getting-started/installation.md)** with pip
 4. **[Run your first model](getting-started/first-model.md)** in minutes
 
@@ -74,7 +74,7 @@ The bitHuman SDK processes 16kHz mono audio input and generates synchronized vid
 
 ## Community & Support
 
-- 🌟 **[Community Hub](https://console.bithuman.io/#community)** - Download models and share creations
+- 🌟 **[Community Hub](https://www.bithuman.ai/#community)** - Download models and share creations
 - 📖 **[Documentation](/)** - Complete guides and API reference
 - 💬 **[Discord](https://discord.gg/bithuman)** - Join our developer community
 - 🐛 **[GitHub Issues](https://github.com/bithuman-io/sdk-examples-python/issues)** - Report bugs and request features

@@ -1,3 +1,9 @@
+> [!WARNING]
+> **This repository is legacy and unmaintained.** It targets the pre-2.x
+> bitHuman SDK. The current SDK, examples, and docs live at
+> **[bithuman-product/bithuman-sdk-public](https://github.com/bithuman-product/bithuman-sdk-public)**
+> (`pip install bithuman`, docs at [docs.bithuman.ai](https://docs.bithuman.ai)).
+
 # bitHuman SDK Examples
 
 bitHuman SDK enables you to build interactive agents that respond realistically to audio input. This repository contains comprehensive examples demonstrating various use cases and integrations.
@@ -15,7 +21,7 @@ bitHuman SDK enables you to build interactive agents that respond realistically 
 
 ### 1. Register and Get API Secret
 
-1. Go to [https://console.bithuman.io](https://console.bithuman.io) and register for free
+1. Go to [https://www.bithuman.ai](https://www.bithuman.ai) and register for free
 2. After registration, navigate to the **SDK** page to create a new API secret
 3. Copy your API secret for use in the examples
 
@@ -23,7 +29,7 @@ bitHuman SDK enables you to build interactive agents that respond realistically 
 
 You'll need a bitHuman avatar model (`.imx` file) to run these examples. These models define the appearance and behavior of your virtual avatar.
 
-1. Visit the [Community page](https://console.bithuman.io/#community)
+1. Visit the [Community page](https://www.bithuman.ai/#community)
 2. Browse the available avatar models
 3. Click on any agent card to download the `.imx` model file directly
 
@@ -231,8 +237,8 @@ runtime = await AsyncBithuman.create(
 
 ## Getting Help
 
-- [bitHuman Documentation](https://docs.bithuman.io)
-- [bitHuman Console](https://console.bithuman.io)
+- [bitHuman Documentation](https://docs.bithuman.ai)
+- [bitHuman Console](https://www.bithuman.ai)
 - [LiveKit Agents](https://github.com/livekit/agents)
 
-For questions or issues, visit the [Community page](https://console.bithuman.io/#community) or check the documentation.
+For questions or issues, visit the [Community page](https://www.bithuman.ai/#community) or check the documentation.

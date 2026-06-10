@@ -363,7 +363,7 @@ Congratulations! You've created your first bitHuman avatar. Now you can:
 ## Getting Help
 
 - 📖 **[Documentation](/)** - Complete API reference
-- 🌟 **[Community Hub](https://console.bithuman.io/#community)** - Models and examples
+- 🌟 **[Community Hub](https://www.bithuman.ai/#community)** - Models and examples
 - 💬 **Discord** - Get help from other developers
 - 🐛 **GitHub Issues** - Report bugs or request features
 

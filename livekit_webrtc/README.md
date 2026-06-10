@@ -231,7 +231,7 @@ For more details on LiveKit Data Streams, refer to the documents of [LiveKit Dat
 
 ## Resources
 
-- [bitHuman Documentation](https://docs.bithuman.io/api-reference/runtime/introduction)
+- [bitHuman Documentation](https://docs.bithuman.ai/api-reference/runtime/introduction)
 - [LiveKit Documentation](https://docs.livekit.io/)
 
 ## Troubleshooting

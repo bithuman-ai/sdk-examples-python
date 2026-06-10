@@ -937,6 +937,6 @@ After mastering voice-driven avatars from audio clips:
 
 - **[Audio Processing Guide](../generate-agent/voice-guidelines.md)** - Optimize audio input quality
 - **[Performance Optimization](../build/gpu-cloud.md)** - Use GPU cloud for faster processing
-- **[Community Examples](https://console.bithuman.io/#community)** - More audio-to-avatar examples
+- **[Community Examples](https://www.bithuman.ai/#community)** - More audio-to-avatar examples
 
 This example provides a solid foundation for creating animated avatars from audio files. Experiment with different audio formats, quality settings, and effects to achieve the best results for your use case! 

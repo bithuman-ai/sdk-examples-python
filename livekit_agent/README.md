@@ -81,6 +81,6 @@ You can customize the agent's behavior by modifying:
 
 ## Resources
 
-- [Bithuman Documentation](https://docs.bithuman.io)
+- [Bithuman Documentation](https://docs.bithuman.ai)
 - [LiveKit Agents](https://github.com/livekit/agents)
 

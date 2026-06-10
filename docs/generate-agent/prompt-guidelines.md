@@ -276,7 +276,7 @@ Once you have a strong prompt:
 
 ## Resources
 
-- **[Community Examples](https://console.bithuman.io/#community)** - See successful agent prompts
+- **[Community Examples](https://www.bithuman.ai/#community)** - See successful agent prompts
 - **Prompt Templates** - Ready-to-use starting points
 - **Best Practices Guide** - Advanced prompt engineering techniques
 

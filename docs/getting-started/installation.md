@@ -52,7 +52,7 @@ pip install bithuman
 
 ## Step 2: Get Your API Secret
 
-1. Visit [console.bithuman.io](https://console.bithuman.io)
+1. Visit [www.bithuman.ai](https://www.bithuman.ai)
 2. Register for a free account
 3. Navigate to the **SDK** section
 4. Create a new API secret
@@ -62,7 +62,7 @@ pip install bithuman
 
 You'll need a `.imx` model file to run bitHuman avatars:
 
-1. Go to the [Community page](https://console.bithuman.io/#community)
+1. Go to the [Community page](https://www.bithuman.ai/#community)
 2. Browse available avatar models
 3. Click on any avatar to download the `.imx` file
 4. Save it to a location you'll remember
@@ -247,7 +247,7 @@ Now that you have bitHuman SDK installed:
 If you encounter any installation issues:
 
 - Check our [troubleshooting guide](#common-installation-issues)
-- Visit our [Community Hub](https://console.bithuman.io/#community)
+- Visit our [Community Hub](https://www.bithuman.ai/#community)
 - Ask questions on our Discord server
 - Create an issue on GitHub
 

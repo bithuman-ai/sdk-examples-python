@@ -31,7 +31,7 @@ This example demonstrates how to use the Bithuman Runtime to create an interacti
 
 ### 1. Register and Get API Secret
 
-1. Go to [https://console.bithuman.io](https://console.bithuman.io) and register for free
+1. Go to [https://www.bithuman.ai](https://www.bithuman.ai) and register for free
 2. After registration, navigate to the **SDK** page to create a new API secret
 3. Copy your API secret for use in the example
 
@@ -39,7 +39,7 @@ This example demonstrates how to use the Bithuman Runtime to create an interacti
 
 You'll need a Bithuman avatar model (`.imx` file) to run the example. These models define the appearance and behavior of your virtual avatar.
 
-1. Visit the [Community page](https://console.bithuman.io/#community)
+1. Visit the [Community page](https://www.bithuman.ai/#community)
 2. Browse the available avatar models
 3. Click on any agent card to download the `.imx` model file directly
 

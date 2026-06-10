@@ -70,7 +70,7 @@ python validate_api.py
 - API secret not set in environment
 
 **Solutions:**
-1. Double-check your API secret from [console.bithuman.io](https://console.bithuman.io)
+1. Double-check your API secret from [www.bithuman.ai](https://www.bithuman.ai)
 2. Make sure you copied it completely
 3. Check for trailing spaces
 
@@ -81,7 +81,7 @@ python validate_api.py
 
 **Solutions:**
 1. Verify the model file path is correct
-2. Download a model from the [Community page](https://console.bithuman.io/#community)
+2. Download a model from the [Community page](https://www.bithuman.ai/#community)
 3. Check file permissions
 
 #### Network Issues
@@ -247,7 +247,7 @@ api_secret = os.getenv('BITHUMAN_API_SECRET')
 
 If you need to create additional API secrets:
 
-1. Go to [console.bithuman.io](https://console.bithuman.io)
+1. Go to [www.bithuman.ai](https://www.bithuman.ai)
 2. Navigate to **SDK** section
 3. Click **Create New Secret**
 4. Give it a descriptive name
@@ -284,7 +284,7 @@ Once your API secret is validated:
 If validation continues to fail:
 
 - Check our [installation guide](installation.md) again
-- Visit our [Community Hub](https://console.bithuman.io/#community)
+- Visit our [Community Hub](https://www.bithuman.ai/#community)
 - Join our Discord for real-time help
 - Contact support through the console
 

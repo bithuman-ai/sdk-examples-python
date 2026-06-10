@@ -1108,6 +1108,6 @@ To enhance your Shopify integration:
 - **[Shopify Partner Documentation](https://shopify.dev/)** - Complete Shopify development guides
 - **[Shopify App Store](https://apps.shopify.com/)** - Browse existing apps for inspiration
 - **[Liquid Template Language](https://shopify.github.io/liquid/)** - Shopify's templating system
-- **[Community Examples](https://console.bithuman.io/#community)** - See other e-commerce integrations
+- **[Community Examples](https://www.bithuman.ai/#community)** - See other e-commerce integrations
 
 Transform your Shopify store with intelligent avatar assistants that provide personalized, engaging customer experiences! 
